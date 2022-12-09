@@ -1,12 +1,10 @@
 #define WIFI_SSID 0
 #define WIFI_PASSWORD 1
 
-#define BTN1_PIN 12
-#define BTN2_PIN 32
-#define BTN3_PIN 15
-#define BTN4_PIN 2
-#define BTN5_PIN 4
-#define BTN6_PIN 5
+#define LED1 4
+#define LED2 16
+#define LED3 17
+
 
 
 #define BTN_1 106

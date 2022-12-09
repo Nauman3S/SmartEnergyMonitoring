@@ -148,7 +148,7 @@ void setup() // main setup functions
     setupButtons();
     setupActuator();
 
-    if (!MDNS.begin("smartj")) // starting mdns so that user can access webpage using url `esp32.local`(will not work on all devices)
+    if (!MDNS.begin("bdemono")) // starting mdns so that user can access webpage using url `esp32.local`(will not work on all devices)
     {
         Serial.println("Error setting up MDNS responder!");
         while (1)

@@ -37,7 +37,7 @@ void cmotsValues()
         "</head>"
         "<body>"
         "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
-                                                        "Live API<br>");
+                                                        "Blockchain Digital Energy<br>");
 
     page += String(F("{\n\""));
     page += String((hostName));
@@ -176,7 +176,7 @@ void handleRoot()
         "</head>"
         "<body>"
         "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
-                                                        "Smart Joystick<br>");
+                                                        "Blockchain Digital Energy<br>");
 
     page += String(F("<h1>Sensors Data</h1>"));
 
@@ -247,7 +247,7 @@ void live()
         "</head>"
         "<body>"
         "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
-                                                        "Smart Joystick<br>");
+                                                        "Blockchain Digital Energy<br>");
 
     page += String(F("<h1>Live Device Values</h1>"));
     page += String(F("<h2>DeviceName: "));

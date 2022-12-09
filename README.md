@@ -26,7 +26,6 @@
 - [Circuit](#circuit)
 - [Usage](#usage)
 - [WebApp](#webapp)
-- [SmartphoneApp](#smartphoneapp)
 - [Built Using](#built_using)
 - [Authors](#authors)
 
@@ -101,17 +100,18 @@ You should have Arduino IDE Installed
 ### ESP32 Dev Module Pinout
 
 
-Follow the pinout diagram given below to connect different components to your TTGO LORA32 board.
+Follow the pinout diagram given below to connect different components to your ESP32 board.
 
 ![LoraPinout](Circuit/ESP32-Pinout.jpg)
 
 
 
-### Circuit Diagram for Smart Energy Monitoring
+### Schematics for Smart Energy Monitoring
 
 Here's the complete circuit diagram of the system.
 
-![CircuitDiagram](Circuit/Circuit_bb.png)
+![CircuitDiagram1](Circuit/sch1.png)
+![CircuitDiagram2](Circuit/sch2.png)
 
 ### Components Connections
 
@@ -121,46 +121,25 @@ Other components pin connection details
 
 
 
-#### Buttons
+#### LEDs
 
 ```Buttons Connections with ESP32```
 
-| Buttons Pins | ESP32 Dev Module Pins| 
+| LED Pins | ESP32 Dev Module Pins| 
 | :--- | :--- | 
-| `BTN1_PIN1` | `12` |
-| `BTN2_PIN1` | `32` |
-| `BTN3_PIN1` | `15` |
-| `BTN4_PIN1` | `2` |
-| `BTN5_PIN1` | `4` |
-| `BTN6_PIN1` | `5` |
+| `LED1` | `4` |
+| `LED2` | `16` |
+| `LED3` | `17` |
 
+| `ALL LED PIN2` | `GND` |
 
+#### Voltage Sensor Pins
 
-| `ALL BTN PIN2` | `GND` |
+```ZMPT101B Connections with ESP32```
 
-#### L298N Pins
-
-```L298N Connections with ESP32```
-
-| L298N Pins | ESP32 Dev Module Pins| 
+| ZMPT101B Pins | ESP32 Dev Module Pins| 
 | :--- | :--- | 
-| `ENA` | `14` |
-| `IN1` | `27` |
-| `IN2` | `26` |
-
-* While OUT1 and OUT2 will be connected to the linear actuator.
-* 12V will be connected to the 12V source.
-
-#### Status RGB LED
-
-```LED Connections```
-
-| LED Pins | ESP32 Dev Module | 
-| :--- | :--- | 
-| `Anode` | `33 via 220Ω resistor` |
-| `Cathode` | `GND` |
-*33 is also connected to the internal LED of ESP32 Dev Module*
-
+| `1` | `1` |
 
 
 ## Usage <a name = "usage"></a>
@@ -168,15 +147,15 @@ Other components pin connection details
 ```diff
 ! Ready for testing
 ```
-1.  Power on your ESP32, it will present you with an AP named ```SmartJ``` (while ```SmartJ``` can be changed in the portal)
+1.  Power on your ESP32, it will present you with an AP named ```smartbde``` (while ```smartbde``` can be changed in the portal)
 2.  Default captive portal password `12345678AP` which can be changed in captive portal.
-3.  Connect to the ESP32 access point and open the web-browser and navigate to the link ```http://smartj.local/_ac```. This link will work on most of the operating systems but if your operating system is not allowing to open it, you may want to check the captive portal IP Address from the serial monitor and can use that IP address inplace of the above mentioned URL.
+3.  Connect to the ESP32 access point and open the web-browser and navigate to the link ```http://smartbde.local/_ac```. This link will work on most of the operating systems but if your operating system is not allowing to open it, you may want to check the captive portal IP Address from the serial monitor and can use that IP address inplace of the above mentioned URL.
 4.  The default access IP Address is ```http://192.168.4.1/_ac```
 5.  You will be presented with a main dashboard as shown below(based on your device)
    ![SCR1](artwork/scr1.png)
 
 5.  Once connected to a WiFi network, you can again access the captive portal using same URL or the IP Address from the Serial monitor.
-6.  The data is published to the MQTT Topic ```smartj/{hostname}``` while the hostname is the one which you can define in Settings page of the captive portal.
+6.  The data is published to the MQTT Topic ```smartbde/{hostname}``` while the hostname is the one which you can define in Settings page of the captive portal.
 
 
 ### Changing Timezone
@@ -226,46 +205,20 @@ You can access the webapp with following test acccount credentials
 
 ### Dashboard Screenshots
 
-## Smartphone App <a name="smartphoneapp"></a>
-```diff
-+ For future use
-```
-[Smartphone App Link: ]()
-
-You can access the Smartphone app with following test acccount credentials
-
-*   Email Address: `test@test.com`
-*   Password: `test`
-
-### Smartphone App Screenshots
-
-
-
 
 ## List of Components <a name = "list"></a>
-```diff
-+ For future use; not a comprehensive list
-```
+
 Following components are used to make this project
 
-1.  [ESP32 Dev Kit Module](https://www.amazon.com/HiLetgo-ESP-WROOM-32-Development-Microcontroller-Integrated/dp/B0718T232Z/ref=sr_1_3?crid=5EOAXOANUSCU&dchild=1&keywords=esp32+nodemcu&qid=1629587138&sprefix=esp32+node%2Caps%2C201&sr=8-3)
-
-2. [Micro USB Cable](https://www.amazon.com/Android-Charger-sweguard-Charging-Phone-Grey/dp/B09MT18H3J/ref=sr_1_2_sspa?keywords=micro+usb+cable&qid=1661962441&sprefix=micro+usb+%2Caps%2C181&sr=8-2-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzVkw1N1RQVTVHTVA3JmVuY3J5cHRlZElkPUEwODYyODU0MUdBSDQwTjBWVDZVSiZlbmNyeXB0ZWRBZElkPUEwODMyNjQyMVo4WU1VOVQ5UlMzQiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU=)
-
-3. [2x Joystick Modules](https://www.amazon.com/Active-Piezo-Buzzer-Module-SunFounder/dp/B014KQLE8Q/ref=sr_1_7?crid=33DTNM1X8SVMH&keywords=joystick%2Bmodule&qid=1660570221&sprefix=joystick%2Bmodule%2Caps%2C175&sr=8-7&th=1)
-
-4. [Jumper Wires](https://www.amazon.com/EDGELEC-Breadboard-Optional-Assorted-Multicolored/dp/B07GD2BWPY/ref=sr_1_1_sspa?crid=1EFHAMLH1TF1Q&keywords=jumper+wires&qid=1661962101&sprefix=jumper+wire%2Caps%2C197&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUFHUFdBUzFHMDVOSlUmZW5jcnlwdGVkSWQ9QTAwNTYwNTAyVDNTNFI5RVI4TTNQJmVuY3J5cHRlZEFkSWQ9QTA5NDU0MzYxSkE3VExKQkZEQUxaJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ==)
-
+1.  ESP32
+2.  ZMPT101B
+3.  LEDs
+4.  2x CT-013-000
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [Arduino](https://www.arduino.cc/) - Embedded Framework and IDE - For Sensor Node Design
 
-## 📹 Demo Videos <a name = "demo"></a>
-```diff
-+ For future use
-```
-<!-- -   [Device Demo Video]() - Smart Energy Monitorings Device Demo Video -->
 
 ## ✍️ Authors <a name = "authors"></a>
 

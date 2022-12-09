@@ -8,14 +8,14 @@ void mqttPublish(String path, String msg);
 void MQTTUnSubscribe()
 {
 
-    String topicN = ss.getTopicWithMAC("SmartJ/", "/actuator");
+    String topicN = ss.getTopicWithMAC("bdemono/", "/energy");
 
     mqttClient.unsubscribe(topicN.c_str());
 }
 void MQTTSubscriptions()
 {
 
-    String topicN = ss.getTopicWithMAC("SmartJ/", "/actuator");
+    String topicN = ss.getTopicWithMAC("bdemono/", "/energy");
     mqttClient.subscribe(topicN.c_str());
 }
 void callback(char *topic, byte *payload, unsigned int length)
@@ -30,28 +30,14 @@ void callback(char *topic, byte *payload, unsigned int length)
         pLoad = pLoad + String((char)payload[i]);
     }
     Serial.println();
-    if (String(topic) == String("OEEDevice/dev/timestamp"))
+    if (String(topic) == String("bdemono/dev/timestamp"))
     {
         syncTime(pLoad);
     }
 
-    else if (String(topic) == ss.getTopicWithMAC("SmartJ/", "/actuator"))
+    else if (String(topic) == ss.getTopicWithMAC("bdemono/", "/energy"))
     {
-        String dir = ss.StringSeparator(pLoad, ';', 0);
-        String speed = ss.StringSeparator(pLoad, ';', 1);
-
-        if (dir == String("forward"))
-        {
-            moveActator(FORWARD, speed.toInt());
-        }
-        else if (dir == String("backward"))
-        {
-            moveActator(BACKWARD, speed.toInt());
-        }
-        else if (dir == String("stop"))
-        {
-            moveActator(STOP, 0);
-        }
+      
     }
     // Switch on the LED if an 1 was received as first character
     if ((char)payload[0] == '1')
@@ -73,7 +59,7 @@ void reconnect()
     {
         Serial.print("Attempting MQTT connection...");
         // Create a random client ID
-        String clientId = "ESP8266Client-";
+        String clientId = "ESP32Client-";
         clientId += String(random(0xffff), HEX);
         // Attempt to connect
         if (mqttClient.connect(clientId.c_str(), mqtt_user, mqtt_pass))

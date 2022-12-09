@@ -126,7 +126,7 @@
       "name": "hostname",
       "type": "ACInput",
       "label": "ESP hostname(Device & AP Name)",
-      "value": "SmartJ"
+      "value": "bdemono"
     },
     {
       "name": "apPass",

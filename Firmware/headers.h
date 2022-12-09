@@ -4,7 +4,7 @@ String userKey;
 String timezone = "";
 String apiKey;
 String apid;
-String hostName = "SmartJ";
+String hostName = "bdemono";
 String minActiveValue = "0";
 String ampSensorType;
 String sensorSelection;
