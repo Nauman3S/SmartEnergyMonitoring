@@ -64,47 +64,16 @@
       "value": "<hr>"
     },
     {
-      "name": "BTN1",
-      "type": "ACText",
-      "value": "0",
-      "style": "font-family:serif;color:#4682b4;"
+      "name": "CUPSNumber",
+      "type": "ACInput",
+      "label": "CUPS Number",
+      "value": ""
     },
     {
-      "name": "BTN2",
-      "type": "ACText",
-      "value": "0",
-      "style": "font-family:serif;color:#4682b4;"
-    },
-    {
-      "name": "BTN3",
-      "type": "ACText",
-      "value": "0",
-      "style": "font-family:serif;color:#4682b4;"
-    },
-    {
-      "name": "BTN4",
-      "type": "ACText",
-      "value": "0",
-      "style": "font-family:serif;color:#4682b4;"
-    },
-    {
-      "name": "BTN5",
-      "type": "ACText",
-      "value": "0",
-      "style": "font-family:serif;color:#4682b4;"
-    },
-    {
-      "name": "BTN6",
-      "type": "ACText",
-      "value": "0",
-      "style": "font-family:serif;color:#4682b4;"
-    },
-    {
-      "name": "refresh",
-      "type": "ACButton",
-      "value": "Refresh Sensors",
-      "action": "refreshP()",
-      "posterior": "none"
+      "name": "PowerSupplier",
+      "type": "ACInput",
+      "label": "Power Supplier Number",
+      "value": ""
     },
     {
       "name": "newline4",

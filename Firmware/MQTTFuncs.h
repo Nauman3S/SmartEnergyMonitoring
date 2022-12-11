@@ -62,7 +62,7 @@ void reconnect()
         String clientId = "ESP32Client-";
         clientId += String(random(0xffff), HEX);
         // Attempt to connect
-        if (mqttClient.connect(clientId.c_str(), mqtt_user, mqtt_pass))
+        if (mqttClient.connect(clientID_mqtt.c_str(), user_mqtt,c_str(), pass_mqtt.c_str()))
         {
             Serial.println("Established:" + String(clientId));
             // mqttClient.subscribe("SmartTControl/data/v");
@@ -103,7 +103,7 @@ bool mqttConnect()
         }
         clientId[8] = '\0';
 
-        if (mqttClient.connect(clientId, mqtt_user, mqtt_pass))
+        if (mqttClient.connect(clientID_mqtt.c_str(), user_mqtt,c_str(), pass_mqtt.c_str()))
         {
             Serial.println("Established:" + String(clientId));
             internetStatus = "Connected";

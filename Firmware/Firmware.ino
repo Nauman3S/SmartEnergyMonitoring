@@ -4,7 +4,10 @@
 #include "MQTTFuncs.h" //MQTT related functions
 #include "webApp.h"    //Captive Portal webpages
 #include <FS.h>        //ESP32 File System
+#include "file_system.h"
 #include "energyHandler.h"
+#include "thingsBoardHandler.h"
+#include "telemetry_handler.h"
 
 const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
 Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset
@@ -15,14 +18,7 @@ String loadParams(AutoConnectAux &aux, PageArgument &args) // function to load s
 {
     (void)(args);
     File param = FlashFS.open(PARAM_FILE, "r");
-    String v1 = "0";
-    String v2 = "0";
-    String v3 = "0";
-    String v4 = "0";
-    String v5 = "0";
-    String v6 = "0";
-    String v7 = "0";
-    String v8 = "0";
+    // String v1 = "0";
 
     if (param)
     {
@@ -31,31 +27,13 @@ String loadParams(AutoConnectAux &aux, PageArgument &args) // function to load s
         Serial.println(param);
         // Serial.println(args);
 
-        AutoConnectText &BTN1ValueElm = aux["BTN1"].as<AutoConnectText>();
-        AutoConnectText &BTN2ValueElm = aux["BTN2"].as<AutoConnectText>();
-        AutoConnectText &BTN3ValueElm = aux["BTN3"].as<AutoConnectText>();
-        AutoConnectText &BTN4ValueElm = aux["BTN4"].as<AutoConnectText>();
-        AutoConnectText &BTN5ValueElm = aux["BTN5"].as<AutoConnectText>();
-        AutoConnectText &BTN6ValueElm = aux["BTN6"].as<AutoConnectText>();
-        // vibSValueElm.value="VibS:91122";#
+        // AutoConnectText &BTN1ValueElm = aux["BTN1"].as<AutoConnectText>();
 
-        v1 = String(BTN1ValueElm.value);
-        v2 = String(BTN2ValueElm.value);
-        v3 = String(BTN3ValueElm.value);
-        v4 = String(BTN4ValueElm.value);
-        v5 = String(BTN5ValueElm.value);
-        v6 = String(BTN6ValueElm.value);
+        // v1 = String(BTN1ValueElm.value);
 
-        if (v1.length() > 0)
-        {
-        }
-
-        // BTN1ValueElm.value = String("Button 1: ") + getButtonState(BTN_1);
-        // BTN2ValueElm.value = String("Button 2: ") + getButtonState(BTN_2);
-        // BTN3ValueElm.value = String("Button 3: ") + getButtonState(BTN_3);
-        // BTN4ValueElm.value = String("Button 4: ") + getButtonState(BTN_4);
-        // BTN5ValueElm.value = String("Button 5: ") + getButtonState(BTN_5);
-        // BTN6ValueElm.value = String("Button 6: ") + getButtonState(BTN_6);
+        // if (v1.length() > 0)
+        // {
+        // }
 
         // curSValueElm.value="CurS:7788";
         param.close();
@@ -91,6 +69,11 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) // save the settings
     hostName = args.arg("hostname");
     hostName.trim();
 
+    cupsNumber = args.arg("CUPSNumber");
+    cupsNumber.trim();
+
+    powerSupplier = args.arg("PowerSupplier");
+    powerSupplier.trim();
     // The entered value is owned by AutoConnectAux of /mqtt_setting.
     // To retrieve the elements of /mqtt_setting, it is necessary to get
     // the AutoConnectAux object of /mqtt_setting.
@@ -108,7 +91,9 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) // save the settings
     echo.value += "ESP host name: " + hostName + "<br>";
     echo.value += "AP Password: " + apPass + "<br>";
     echo.value += "Settings Page Password: " + settingsPass + "<br>";
-    mqttPublish("SmartJ/dev/config", String("tz;") + timezone); // publish timezone info
+    echo.value += "CUPS Number: " + cupsNumber + "<br>";
+    echo.value += "Power Supplier: " + powerSupplier + "<br>";
+    mqttPublish("bdemono/dev/config", String("tz;") + timezone); // publish timezone info
     return String("");
 }
 bool loadAux(const String auxName) // load defaults from data/*.json
@@ -145,6 +130,7 @@ void setup() // main setup functions
     Serial.begin(115200);
     delay(1000);
     setupEnergyHander();
+    configureFilesSystem();
 
     if (!MDNS.begin("bdemono")) // starting mdns so that user can access webpage using url `esp32.local`(will not work on all devices)
     {
@@ -175,6 +161,8 @@ void setup() // main setup functions
         AutoConnectInput &userkeyElm = mqtt_setting["userkey"].as<AutoConnectInput>();
         AutoConnectInput &apikeyElm = mqtt_setting["apikey"].as<AutoConnectInput>();
         AutoConnectInput &settingsPassElm = mqtt_setting["settingsPass"].as<AutoConnectInput>();
+        AutoConnectInput &cupsNumberElm = mqtt_setting["CUPSNumber"].as<AutoConnectInput>();
+        AutoConnectInput &powerSupplierElm = mqtt_setting["PowerSupplier"].as<AutoConnectInput>();
         // vibSValueElm.value="VibS:11";
         serverName = String(serverNameElm.value);
         channelId = String(channelidElm.value);
@@ -183,6 +171,8 @@ void setup() // main setup functions
         hostName = String(hostnameElm.value);
         apPass = String(apPassElm.value);
         settingsPass = String(settingsPassElm.value);
+        cupsNumber = String(cupsNumberElm.value);
+        powerSupplier = String(powerSupplierElm.value);
         if (hostnameElm.value.length())
         {
             // hostName=hostName+ String("-") + String(GET_CHIPID(), HEX);
@@ -277,11 +267,7 @@ void loop()
 
     if (millis() - lastPub > updateInterval) // publish data to mqtt server
     {
-        latestValues ="0";
-            // getButtonState(BTN_1) + String(";") + getButtonState(BTN_2) + String(";") + getButtonState(BTN_3) + String(";") +
-            // getButtonState(BTN_4) String(";") + getButtonState(BTN_5) + String(";") + getButtonState(BTN_6);
-        mqttPublish("smartj/" + String(hostName), getTimestamp() + String(";") + latestValues); // publish data to mqtt broker
-        Serial.println(latestValues);
+        generateJSONandPublish(realPower1, powerFActor1, supplyVoltage1, Irms1, realPower2, powerFActor2, supplyVoltage2, Irms2);
 
         ledState(ACTIVE_MODE);
 

@@ -10,8 +10,8 @@ String ampSensorType;
 String sensorSelection;
 String apPass;
 String settingsPass;
-String Photosensor = "0";
-String tempUnits = "";
+String cupsNumber = "0";
+String powerSupplier = "";
 
 #if defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266WiFi.h>
@@ -85,9 +85,12 @@ char __mac[sizeof(mac)];
 
 const char *mqtt_server = "broker.hivemq.com";
 const int mqtt_port = 1883;
-const char *mqtt_user = "testUser";
-const char *mqtt_pass = "testUser@123";
-const char *mqtt_client_name = __mac; //"12312312312332212";// any random alphanumeric stirng
+char *mqtt_user = "testUser";
+char *mqtt_pass = "testUser@123";
+char *mqtt_client_name = __mac; //"12312312312332212";// any random alphanumeric stirng
+String clientID_mqtt="";
+String user_mqtt="";
+String pass_mqtt="";
 //////////////////////////////
 #define BUFFER_SIZE 250
 String incoming = "";

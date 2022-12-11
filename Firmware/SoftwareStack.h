@@ -9,6 +9,7 @@ public:
     String StringSeparator(String data, char separator, int index);
     char *StrToCharArray(String data);
     String getMACAddress();
+    String getDeviceID();
     String getTopicWithMAC(String before_mac, String after_mac);
 
     SoftwareStack();
@@ -61,4 +62,12 @@ String SoftwareStack::getTopicWithMAC(String before_mac, String after_mac)
     String t = before_mac + getMACAddress() + after_mac;
 
     return t;
+}
+String SoftwareStack::getDeviceID()
+{
+    String devID = String(WiFi.macAddress());
+    devID = StringSeparator(devID, ':', 3) +
+                StringSeparator(devID, ':', 4) + 
+                StringSeparator(devID, ':', 5);
+    return devID;
 }

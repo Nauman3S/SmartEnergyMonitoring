@@ -3,6 +3,19 @@ EnergyMonitor emon1; // Create an instance
 EnergyMonitor emon2; // Create an instance
 
 String energyData = "";
+
+double realPower1 = 0.0;
+double apparentPower1 = 0.0;
+double powerFActor1 = 0.0;
+double supplyVoltage1 = 0.0;
+double Irms1 = 0.0;
+
+double Irms2 = 0.0;
+double apparentPower2 = 0.0;
+double realPower2 = 0.0;
+double powerFActor2 = 0.0;
+double supplyVoltage2 = 0.0;
+
 void setupEnergyHander()
 {
     emon1.voltage(VP, 234.26, 1.7); // Voltage: input pin, calibration, phase_shift
@@ -16,20 +29,23 @@ void loopEmon()
 
     emon1.serialprint(); // Print out all variables (realpower, apparent power, Vrms, Irms, power factor)
 
-    float realPower = emon1.realPower;         // extract Real Power into variable
-    float apparentPower1 = emon1.apparentPower; // extract Apparent Power into variable
-    float powerFActor = emon1.powerFactor;     // extract Power Factor into Variable
-    float supplyVoltage = emon1.Vrms;          // extract Vrms into Variable
-    float Irms1 = emon1.Irms;                   // extract Irms into Variable
+    realPower1 = emon1.realPower;         // extract Real Power into variable
+    apparentPower1 = emon1.apparentPower; // extract Apparent Power into variable
+    powerFActor1 = emon1.powerFactor;     // extract Power Factor into Variable
+    supplyVoltage1 = emon1.Vrms;          // extract Vrms into Variable
+    Irms1 = emon1.Irms;                   // extract Irms into Variable
 
-    double Irms2 = emon2.calcIrms(1480); // Calculate Irms only
-    double apparentPower2 = Irms2 * 230;
-
-    energyData=String(realPower)+String(";")+String(apparentPower1)+String(";")+
-    String(powerFActor)+String(";")+String(supplyVoltage)+String(";")+String(Irms1)+
-    String(";")+String(Irms2)+String(";")+String(apparentPower2);
+    Irms2 = emon2.calcIrms(1480); // Calculate Irms only
+    apparentPower2 = Irms2 * 230;
+    realPower2 = emon2.realPower;
+    powerFActor2 = emon2.powerFactor; // extract Power Factor into Variable
+    supplyVoltage2 = emon1.Vrms;  
+    energyData = String(realPower1) + String(";") + String(apparentPower1) + String(";") +
+                 String(powerFActor1) + String(";") + String(supplyVoltage1) + String(";") + String(Irms1) +
+                 String(";") + String(Irms2) + String(";") + String(apparentPower2);
 }
 
-String getEnergyData(){
+String getEnergyData()
+{
     return energyData;
 }

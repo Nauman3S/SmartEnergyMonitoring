@@ -6,19 +6,6 @@
 #define LED3 17
 
 
-
-#define BTN_1 106
-#define BTN_2 107
-#define BTN_3 108
-#define BTN_4 109
-#define BTN_5 110
-#define BTN_6 111
-
-#define FORWARD 112
-#define BACKWARD 113
-#define STOP 114
-
-
 #define VN 39
 #define IO34  34
 #define VP  36

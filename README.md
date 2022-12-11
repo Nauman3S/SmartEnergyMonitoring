@@ -139,7 +139,16 @@ Other components pin connection details
 
 | ZMPT101B Pins | ESP32 Dev Module Pins| 
 | :--- | :--- | 
-| `1` | `1` |
+| `OUT` | `VP(36)` |
+
+#### Current Sensor Pins
+
+```Current Connections with ESP32```
+
+| Current Pins | ESP32 Dev Module Pins| 
+| :--- | :--- | 
+| `Sensor 1_PIN1` | `IO34` |
+| `Sensor 2_PIN1` | `VN(IO39)` |
 
 
 ## Usage <a name = "usage"></a>
