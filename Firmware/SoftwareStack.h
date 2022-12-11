@@ -3,10 +3,13 @@
 class SoftwareStack
 {
 public:
-#define DebugPrint(x) Serial.println(x)
+#define DebugPrintL(x) Serial.println(x)
+#define DebugPrint(x) Serial.print(x)
 
     String StringSeparator(String data, char separator, int index);
     char *StrToCharArray(String data);
+    String getMACAddress();
+    String getTopicWithMAC(String before_mac, String after_mac);
 
     SoftwareStack();
 
@@ -48,8 +51,8 @@ String SoftwareStack::StringSeparator(String data, char separator, int index)
 String SoftwareStack::getMACAddress()
 {
     String TrackerID = String(WiFi.macAddress());
-    TrackerID = stringSeparator(TrackerID, ':', 0) + stringSeparator(TrackerID, ':', 1) + stringSeparator(TrackerID, ':', 2) + stringSeparator(TrackerID, ':', 3) +
-                stringSeparator(TrackerID, ':', 4) + stringSeparator(TrackerID, ':', 5);
+    TrackerID = StringSeparator(TrackerID, ':', 0) + StringSeparator(TrackerID, ':', 1) + StringSeparator(TrackerID, ':', 2) + StringSeparator(TrackerID, ':', 3) +
+                StringSeparator(TrackerID, ':', 4) + StringSeparator(TrackerID, ':', 5);
     return TrackerID;
 }
 String SoftwareStack::getTopicWithMAC(String before_mac, String after_mac)

@@ -19,6 +19,6 @@
 #define STOP 114
 
 
-#define motor1Pin1 27
-#define motor1Pin2  26 
-#define enable1Pin  14
+#define VN 39
+#define IO34  34
+#define VP  36

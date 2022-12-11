@@ -1,11 +1,10 @@
 #include "consts.h"
-#include "button_handler.h"
-#include "actuatorHandler.h"
 #include "headers.h" //all misc. headers and functions
 #include "esp32InternalTime.h"
 #include "MQTTFuncs.h" //MQTT related functions
 #include "webApp.h"    //Captive Portal webpages
 #include <FS.h>        //ESP32 File System
+#include "energyHandler.h"
 
 const long interval = 1000 * 60 * 5;        // Interval at which to read sensors//5 mintues
 Neotimer dataAcqTimer = Neotimer(interval); // Set timer's preset
@@ -51,12 +50,12 @@ String loadParams(AutoConnectAux &aux, PageArgument &args) // function to load s
         {
         }
 
-        BTN1ValueElm.value = String("Button 1: ") + getButtonState(BTN_1);
-        BTN2ValueElm.value = String("Button 2: ") + getButtonState(BTN_2);
-        BTN3ValueElm.value = String("Button 3: ") + getButtonState(BTN_3);
-        BTN4ValueElm.value = String("Button 4: ") + getButtonState(BTN_4);
-        BTN5ValueElm.value = String("Button 5: ") + getButtonState(BTN_5);
-        BTN6ValueElm.value = String("Button 6: ") + getButtonState(BTN_6);
+        // BTN1ValueElm.value = String("Button 1: ") + getButtonState(BTN_1);
+        // BTN2ValueElm.value = String("Button 2: ") + getButtonState(BTN_2);
+        // BTN3ValueElm.value = String("Button 3: ") + getButtonState(BTN_3);
+        // BTN4ValueElm.value = String("Button 4: ") + getButtonState(BTN_4);
+        // BTN5ValueElm.value = String("Button 5: ") + getButtonState(BTN_5);
+        // BTN6ValueElm.value = String("Button 6: ") + getButtonState(BTN_6);
 
         // curSValueElm.value="CurS:7788";
         param.close();
@@ -145,8 +144,7 @@ void setup() // main setup functions
 {
     Serial.begin(115200);
     delay(1000);
-    setupButtons();
-    setupActuator();
+    setupEnergyHander();
 
     if (!MDNS.begin("bdemono")) // starting mdns so that user can access webpage using url `esp32.local`(will not work on all devices)
     {
@@ -275,12 +273,13 @@ void loop()
     server.handleClient();
     portal.handleRequest();
     loopLEDHandler();
+    loopEmon();
 
     if (millis() - lastPub > updateInterval) // publish data to mqtt server
     {
-        latestValues =
-            getButtonState(BTN_1) + String(";") + getButtonState(BTN_2) + String(";") + getButtonState(BTN_3) + String(";") +
-            getButtonState(BTN_4) String(";") + getButtonState(BTN_5) + String(";") + getButtonState(BTN_6);
+        latestValues ="0";
+            // getButtonState(BTN_1) + String(";") + getButtonState(BTN_2) + String(";") + getButtonState(BTN_3) + String(";") +
+            // getButtonState(BTN_4) String(";") + getButtonState(BTN_5) + String(";") + getButtonState(BTN_6);
         mqttPublish("smartj/" + String(hostName), getTimestamp() + String(";") + latestValues); // publish data to mqtt broker
         Serial.println(latestValues);
 
