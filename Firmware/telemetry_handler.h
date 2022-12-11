@@ -1,6 +1,6 @@
 #include <ArduinoJson.h>
 
-void generateJSONandPublish(double ct1_powerw, double ct1_pf, double ct1_v, double ct1_c, double ct2_powerw, double ct2_pf, double ct2_v, double ct2_c, )
+void generateJSONandPublish(double ct1_powerw, double ct1_pf, double ct1_v, double ct1_c, double ct2_powerw, double ct2_pf, double ct2_v, double ct2_c )
 {
     StaticJsonDocument<512> doc;
 

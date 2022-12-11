@@ -16,7 +16,6 @@ uint8_t readProvisionStatus()
     if (!file)
     {
         Serial.println("Failed to open file for reading");
-        return String("");
     }
 
     Serial.println("File Content:");
@@ -44,7 +43,6 @@ void writeProvisionStatus(uint8_t status)
     if (!file)
     {
         Serial.println("There was an error opening the file for writing");
-        return;
     }
 
     if (file.print(status_value))
@@ -62,11 +60,10 @@ void writeProvisionStatus(uint8_t status)
 void thingsBoardProvData(String mqttclientID, String mqttUsername, String mqttPassword)
 {
     File file = SPIFFS.open("/thingsboard.data", FILE_WRITE);
-    String mqttCreds = mqttClientID + String(";") + mqttUsername + String(";") + mqttPassword;
+    String mqttCreds = mqttclientID + String(";") + mqttUsername + String(";") + mqttPassword;
     if (!file)
     {
         Serial.println("There was an error opening the file for writing");
-        return;
     }
 
     if (file.print(mqttCreds))
@@ -88,7 +85,6 @@ String readmqttCreds()
     if (!file)
     {
         Serial.println("Failed to open file for reading");
-        return String("");
     }
 
     Serial.println("File Content:");
