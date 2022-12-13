@@ -3,9 +3,9 @@
 #define THINGSBOARD_SERVER "thingsboard.cloud"
 #define THINGSBOARD_PORT 1883
 
-const char *provisionDeviceKey = "yvpu40czv41xurrraj5d";
-const char *provisionDeviceSecret = "pi02ksnlbcq5zv9ta0f9";
-const char *deviceName = "BDE_Monophase_v_1";
+const char *provisionDeviceKey = "0ug60fv4tbz3m7vgqkvv";
+const char *provisionDeviceSecret = "lgej69557ryg8fmvor1z";
+const char *deviceName = "BDE_Mono_V1_Profile";
 
 ThingsBoard tb_provision(wclient);
 

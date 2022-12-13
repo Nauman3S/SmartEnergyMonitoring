@@ -47,6 +47,8 @@ void generateJSONandPublish(double ct1_powerw, double ct1_pf, double ct1_v, doub
     stats["unixtime"] = getTimestamp();
     char buffer[512];
     serializeJson(doc, buffer);
-    String path = String("v1/devices/bedmono-") + ss.getDeviceID() + String("/telemetry");
+    // String path = String("v1/devices/bedmono-") + ss.getDeviceID() + String("/telemetry");
+    Serial.println(buffer);
+    String path = String("v1/devices/me/telemetry");
     mqttClient.publish(path.c_str(), buffer);
 }

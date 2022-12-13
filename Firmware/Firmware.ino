@@ -117,12 +117,12 @@ bool whileCP()
 
     if (inAP == 0)
     {
-        ledState(AP_MODE);
+        //ledState(AP_MODE);
         inAP = 1;
     }
     // Serial.println("AP MODE");
 
-    loopLEDHandler();
+    // loopLEDHandler();
 }
 
 void setup() // main setup functions
@@ -132,14 +132,14 @@ void setup() // main setup functions
     setupEnergyHander();
     configureFilesSystem();
 
-    if (!MDNS.begin("bdemono")) // starting mdns so that user can access webpage using url `esp32.local`(will not work on all devices)
-    {
-        Serial.println("Error setting up MDNS responder!");
-        while (1)
-        {
-            delay(1000);
-        }
-    }
+    // if (!MDNS.begin("esp32")) // starting mdns so that user can access webpage using url `esp32.local`(will not work on all devices)
+    // {
+    //     Serial.println("Error setting up MDNS responder!");
+    //     while (1)
+    //     {
+    //         delay(1000);
+    //     }
+    // }
 #if defined(ARDUINO_ARCH_ESP8266)
     FlashFS.begin();
 #elif defined(ARDUINO_ARCH_ESP32)
@@ -179,7 +179,7 @@ void setup() // main setup functions
             //;
             // portal.config(hostName.c_str(), apPass.c_str());
             //  portal.config(hostName.c_str(), "123456789AP");
-            config.apid = hostName; // hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
+            config.apid = hostName;//+ "_" + String(GET_CHIPID(), HEX);
             config.password = apPass;
             config.psk = apPass;
             // portal.config(hostName.c_str(), "123456789AP");
@@ -190,7 +190,7 @@ void setup() // main setup functions
 
             // hostName = String("OEE");;
             // portal.config(hostName.c_str(), "123456789AP");
-            config.apid = hostName; // hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
+            config.apid = hostName;//+ "_" + String(GET_CHIPID(), HEX);
             config.password = apPass;
             config.psk = apPass;
             // config.hostName = hostName;//hostnameElm.value+ "-" + String(GET_CHIPID(), HEX);
@@ -215,7 +215,7 @@ void setup() // main setup functions
     Serial.println(hostName);
     Serial.print("Password: ");
     Serial.println(apPass);
-    config.title = "Smart Joystick"; // set title of webapp
+    config.title = "BDEMono"; // set title of webapp
 
     // add different tabs on homepage
     portal.append("/api-now", "api-now");
@@ -242,7 +242,7 @@ void setup() // main setup functions
     if (portal.begin())
     {
         Serial.println("Started, IP:" + WiFi.localIP().toString());
-        ledState(AP_MODE);
+        //ledState(AP_MODE);
     }
     else
     {
@@ -254,7 +254,8 @@ void setup() // main setup functions
         }
     }
 
-    MDNS.addService("http", "tcp", 80);
+    // MDNS.addService("http", "tcp", 80);
+    // setupThingsBoardProvisioning();
     mqttConnect(); // start mqtt
 }
 String latestValues = "";
@@ -262,14 +263,15 @@ void loop()
 {
     server.handleClient();
     portal.handleRequest();
-    loopLEDHandler();
+    // loopLEDHandler();
     loopEmon();
+    // loopThingsBoardProvisioning();
 
     if (millis() - lastPub > updateInterval) // publish data to mqtt server
     {
         generateJSONandPublish(realPower1, powerFActor1, supplyVoltage1, Irms1, realPower2, powerFActor2, supplyVoltage2, Irms2);
 
-        ledState(ACTIVE_MODE);
+        //ledState(ACTIVE_MODE);
 
         lastPub = millis();
     }
@@ -280,7 +282,7 @@ void loop()
     mqttClient.loop();
     if (WiFi.status() == WL_IDLE_STATUS)
     {
-        ledState(IDLE_MODE);
+        //ledState(IDLE_MODE);
         ESP.restart();
 
         delay(1000);

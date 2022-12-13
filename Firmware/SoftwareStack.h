@@ -16,8 +16,6 @@ public:
 
 private:
     char buf[200];
-
-    int sensorVCounter = 0;
 };
 SoftwareStack::SoftwareStack()
 {

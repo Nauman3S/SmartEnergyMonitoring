@@ -5,13 +5,10 @@ String timezone = "";
 String apiKey;
 String apid;
 String hostName = "bdemono";
-String minActiveValue = "0";
-String ampSensorType;
-String sensorSelection;
 String apPass;
 String settingsPass;
 String cupsNumber = "0";
-String powerSupplier = "";
+String powerSupplier = "0";
 
 #if defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266WiFi.h>
@@ -88,11 +85,11 @@ const int mqtt_port = 1883;
 char *mqtt_user = "testUser";
 char *mqtt_pass = "testUser@123";
 char *mqtt_client_name = __mac; //"12312312312332212";// any random alphanumeric stirng
-String clientID_mqtt="";
-String user_mqtt="";
-String pass_mqtt="";
+String clientID_mqtt="broker.hivemq.com";
+String user_mqtt="default";
+String pass_mqtt="default";
 //////////////////////////////
-#define BUFFER_SIZE 250
+#define BUFFER_SIZE 512
 String incoming = "";
 String incomingTopic = "";
 WiFiClient wclient;
