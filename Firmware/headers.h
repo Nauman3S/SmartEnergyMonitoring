@@ -1,14 +1,20 @@
 String serverName;
 String channelId;
 String userKey;
-String timezone = "";
 String apiKey;
 String apid;
 String hostName = "bdemono";
 String apPass;
 String settingsPass;
-String cupsNumber = "0";
-String powerSupplier = "0";
+String CUPS="0";
+String powerSupplierNumber="0";
+
+#include <Preferences.h>
+Preferences preferences;
+#include <ArduinoJson.h>
+DynamicJsonDocument doc(2024);
+String myMac = "";
+String Cstatus = "NULL";
 
 #if defined(ARDUINO_ARCH_ESP8266)
 #include <ESP8266WiFi.h>
@@ -17,7 +23,7 @@ String powerSupplier = "0";
 #include <WiFi.h>
 #include <WebServer.h>
 #endif
-
+#define GET_CHIPID() ((uint16_t)(ESP.getEfuseMac() >> 32))
 #include <AutoConnect.h>
 
 #if defined(ARDUINO_ARCH_ESP8266)
@@ -45,10 +51,8 @@ fs::SPIFFSFS &FlashFS = SPIFFS;
 #include "statusLED.h"
 #include "neoTimer.h"
 
-#define GET_CHIPID() ((uint16_t)(ESP.getEfuseMac() >> 32))
-
 unsigned long lastPub = 0;
-unsigned int updateInterval = 1;
+unsigned int updateInterval = 3000;
 
 #define PARAM_FILE "/param.json"
 #define AUX_MQTTSETTING "/mqtt_setting"
@@ -81,25 +85,23 @@ String mac = (WiFi.macAddress());
 char __mac[sizeof(mac)];
 
 const char *mqtt_server = "broker.hivemq.com";
+// IPAddress mqttBroker(34,214,65,82);
 const int mqtt_port = 1883;
-char *mqtt_user = "testUser";
-char *mqtt_pass = "testUser@123";
-char *mqtt_client_name = __mac; //"12312312312332212";// any random alphanumeric stirng
-String clientID_mqtt="broker.hivemq.com";
-String user_mqtt="default";
-String pass_mqtt="default";
+const char *mqtt_user = "testUser";
+const char *mqtt_pass = "testUser@123";
+String clientID_mqtt = __mac;
+String user_mqtt = "test";
+String pass_mqtt = "test";
+const char *mqtt_client_name = __mac; //"12312312312332212";// any random alphanumeric stirng
 //////////////////////////////
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 250
 String incoming = "";
 String incomingTopic = "";
 WiFiClient wclient;
 PubSubClient mqttClient(wclient);
 
-String devList[10];
-String IMEIsList[10];
 String LastUpdated = "";
 String internetStatus = "Not-Connected";
-int selectedDeviceIndex = 0;
 String connectionMode = "WiFi";
 
 bool atDetect(IPAddress &softapIP)

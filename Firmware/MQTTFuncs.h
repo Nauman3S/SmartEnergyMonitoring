@@ -32,12 +32,10 @@ void callback(char *topic, byte *payload, unsigned int length)
     Serial.println();
     if (String(topic) == String("bdemono/dev/timestamp"))
     {
-        syncTime(pLoad);
     }
 
     else if (String(topic) == ss.getTopicWithMAC("bdemono/", "/energy"))
     {
-      
     }
     // Switch on the LED if an 1 was received as first character
     if ((char)payload[0] == '1')
@@ -127,4 +125,14 @@ void mqttPublish(String path, String msg)
 {
     // String path = String("channels/") + channelId + String("/publish/") + apiKey;
     mqttClient.publish(path.c_str(), msg.c_str());
+}
+
+void publishMQTT(String topic, String msg)
+{
+
+    Serial.println("Publishing MQTT");
+    if (mqttClient.publish(topic.c_str(), msg.c_str()))
+    {
+        Serial.println("Published Successfully: " + (String)msg);
+    }
 }
