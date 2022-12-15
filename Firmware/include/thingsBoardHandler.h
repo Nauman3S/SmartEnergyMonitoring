@@ -25,7 +25,6 @@ double total_energy_24h_export = 0;
 double total_energy_15m_import = 0;
 double total_energy_15m_export = 0;
 
-
 String ACCESS_TOKEN = "";
 String chipId;
 String firmVer = "BDEM-1.0";
@@ -95,6 +94,7 @@ void processProvisionResponse(const Provision_Data &data)
     if (STATUS.indexOf("SUCCESS") > -1)
     {
         ACCESS_TOKEN = (String)credentialsValue;
+        Serial.print("Access Token Received: ");
         // Print values.
         Serial.println(ACCESS_TOKEN);
         Serial.println(status);
@@ -177,6 +177,8 @@ void setupTbProvision()
     devID = "bdemono-" + ss.getDeviceID();
     preferences.begin("my-app", false);
     ACCESS_TOKEN = preferences.getString("ACCESS_TOKEN");
+    Serial.print("Access Token: ");
+    Serial.println(ACCESS_TOKEN);
     if (ACCESS_TOKEN.length() > 15)
     {
         Serial.println("ALREADY HAVE VALID ACCESS TOKEN " + (String)ACCESS_TOKEN);

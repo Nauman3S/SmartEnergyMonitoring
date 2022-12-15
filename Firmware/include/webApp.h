@@ -43,18 +43,16 @@ void handleRoot()
         "<body>"
         "<div class=\"menu\">" AUTOCONNECT_LINK(BAR_24) "</div>"
                                                         "BDEMono<br>");
-
+    
     page += String(F("<h1>Blockchain Digital Energy</h1>"));
 
     page += String(F("<h3>Device ID: "));
     page += ss.getMACAddress();
     page += String(F("</h3>"));
 
-    page += String(F("<h4>Temperature and Humidity: "));
-    // page += getDHT22SensorValue();
-    page += String(F("</h4>"));
-
-    page += String(F("<p><br><a class=\"button\" href=\"/\">Refresh</a></p>"));
+    page += String(F("<p><br><a class=\"button\" href=\"/mqtt_setting\">Settings</a></p>"));
+    page += String(F("<p><br><a class=\"button\" href=\"/_ac/config\">Config WiFi</a></p>"));
+    page += String(F("<p><br><a class=\"button\" href=\"/_ac\">System Details</a></p>"));
     page += String(F("</body></html>"));
 
     server.send(200, "text/html", page);

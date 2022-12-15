@@ -28,17 +28,6 @@ String loadParams(AutoConnectAux &aux, PageArgument &args) // function to load s
 
 String saveParams(AutoConnectAux &aux, PageArgument &args) // save the settings
 {
-    serverName = args.arg("mqttserver"); // broker
-    serverName.trim();
-
-    channelId = args.arg("channelid");
-    channelId.trim();
-
-    userKey = args.arg("userkey"); // user name
-    userKey.trim();
-
-    apiKey = args.arg("apikey"); // password
-    apiKey.trim();
 
     apPass = args.arg("apPass"); // ap pass
     apPass.trim();
@@ -53,15 +42,11 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) // save the settings
     // To retrieve the elements of /mqtt_setting, it is necessary to get
     // the AutoConnectAux object of /mqtt_setting.
     File param = FlashFS.open(PARAM_FILE, "w");
-    portal.aux("/mqtt_setting")->saveElement(param, {"mqttserver", "channelid", "userkey", "apikey", "hostname", "apPass", "settingsPass"});
+    portal.aux("/mqtt_setting")->saveElement(param, {"hostname", "apPass", "settingsPass"});
     param.close();
 
     // Echo back saved parameters to AutoConnectAux page.
     AutoConnectText &echo = aux["parameters"].as<AutoConnectText>();
-    echo.value = "Server: " + serverName + "<br>";
-    echo.value += "Channel ID: " + channelId + "<br>";
-    echo.value += "Username: " + userKey + "<br>";
-    echo.value += "Password: " + apiKey + "<br>";
     echo.value += "ESP host name: " + hostName + "<br>";
     echo.value += "AP Password: " + apPass + "<br>";
     echo.value += "Settings Page Password: " + settingsPass + "<br>";
@@ -128,17 +113,11 @@ void setup() // main setup functions
         loadParams(mqtt_setting, args);
         AutoConnectInput &hostnameElm = mqtt_setting["hostname"].as<AutoConnectInput>();
         AutoConnectInput &apPassElm = mqtt_setting["apPass"].as<AutoConnectInput>();
-        AutoConnectInput &serverNameElm = mqtt_setting["mqttserver"].as<AutoConnectInput>();
-        AutoConnectInput &channelidElm = mqtt_setting["channelid"].as<AutoConnectInput>();
-        AutoConnectInput &userkeyElm = mqtt_setting["userkey"].as<AutoConnectInput>();
-        AutoConnectInput &apikeyElm = mqtt_setting["apikey"].as<AutoConnectInput>();
+
         AutoConnectInput &settingsPassElm = mqtt_setting["settingsPass"].as<AutoConnectInput>();
 
         // vibSValueElm.value="VibS:11";
-        serverName = String(serverNameElm.value);
-        channelId = String(channelidElm.value);
-        userKey = String(userkeyElm.value);
-        apiKey = String(apikeyElm.value);
+
         hostName = String(hostnameElm.value);
         apPass = String(apPassElm.value);
         settingsPass = String(settingsPassElm.value);

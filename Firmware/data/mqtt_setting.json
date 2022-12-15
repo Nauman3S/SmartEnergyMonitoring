@@ -22,37 +22,6 @@
       "style": "font-family:serif;color:#4682b4;"
     },
     {
-      "name": "mqttserver",
-      "type": "ACInput",
-      "value": "broker.hivemq.com",
-      "placeholder": "MQTT broker server",
-      "label": "MQTT Server"
-    },
-    {
-      "name": "userkey",
-      "type": "ACInput",
-      "value": "",
-      "label": "MQTT Username"
-    },
-    {
-      "name": "apikey",
-      "type": "ACInput",
-      "value": "",
-      "label": "MQTT Password"
-    },
-    {
-      "name": "channelid",
-      "type": "ACInput",
-      "value": "",
-      "label": "Channel ID"
-    },
-    {
-      "name": "timezone",
-      "type": "ACInput",
-      "value": "US/Pacific",
-      "label": "Timezone"
-    },
-    {
       "name": "newline",
       "type": "ACElement",
       "value": "<hr>"
@@ -66,7 +35,7 @@
     {
       "name": "CUPSNumber",
       "type": "ACInput",
-      "label": "CUPS Number",
+      "label": "CUPS Number(ES-  XXXXXXXXXXXXXXXXXX  -0F)",
       "value": ""
     },
     {
