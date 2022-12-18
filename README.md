@@ -68,10 +68,11 @@ You should have Platform.io Installed
   1.  Add ESP32 Board to your Platform.io
   
   2. Open `Firmware` folder in VSCode with Platform.io
-  3. On the right side-bar click on Platform.io button
-  4. Click on `Upload Filesystem Image` to upload the SPIFFS data.
+  3. Unzip `libdeps.zip` in `.pio` folder.
+  4. On the right side-bar click on Platform.io button
+  5. Click on `Upload Filesystem Image` to upload the SPIFFS data.
   ![pio](artwork/pio.png)
-  5.  Now upload the code to your esp32.
+  6.  Now upload the code to your esp32.
 
 
 ## Circuit <a name = "circuit"></a>
