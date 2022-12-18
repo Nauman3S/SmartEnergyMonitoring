@@ -51,6 +51,7 @@ fs::SPIFFSFS &FlashFS = SPIFFS;
 #endif
 #include "statusLED.h"
 #include "neoTimer.h"
+#include "ntp.h"
 
 unsigned long lastPub = 0;
 unsigned int updateInterval = 3000;

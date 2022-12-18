@@ -45,5 +45,5 @@ void loopNTP()
     Serial.println("Hour: " + (String)hour);
     Serial.println("Min: " + (String)minu);
     Serial.println("Sec: " + (String)sec);
-    delay(1000);
+    // delay(1000);
 }

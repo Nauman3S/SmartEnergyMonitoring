@@ -7,6 +7,7 @@
 #include <FS.h>     //ESP32 File System
 #include "energyHandler.h"
 #include "thingsBoardHandler.h"
+Neotimer ntpTimer = Neotimer(1000); // 1 second timer
 
 IPAddress ipV(192, 168, 4, 1);
 String loadParams(AutoConnectAux &aux, PageArgument &args) // function to load saved settings
@@ -210,6 +211,7 @@ void setup() // main setup functions
 
     setupTbProvision();
     mqttConnect(); // start mqtt
+    setupNTP();
 }
 
 int k = 0;
@@ -218,6 +220,11 @@ void loop()
 {
     server.handleClient();
     portal.handleRequest();
+    loopEmon();
+    if (ntpTimer.repeat(1))
+    {
+        loopNTP();
+    }
 
     if (millis() - lastPub > updateInterval) // publish data to mqtt server
     {

@@ -18,9 +18,10 @@ double supplyVoltage2 = 0.0;
 
 void setupEnergyHander()
 {
-    emon1.voltage(VP, 234.26, 1.7); // Voltage: input pin, calibration, phase_shift
-    emon1.current(IO34, 111.1);     // input pin, calibration
-    emon2.current(VN, 111.1);       // input pin, calibration
+    emon1.voltage(VP, vCalibration, 1.7); // Voltage: input pin, calibration, phase_shift
+    emon2.voltage(VP, vCalibration, 1.7);
+    emon1.current(IO34, currCalibration_A);     // input pin, calibration
+    emon2.current(VN, currCalibration_B);       // input pin, calibration
 }
 
 void loopEmon()
