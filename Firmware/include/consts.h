@@ -13,3 +13,12 @@
 #define currCalibration_A 1
 #define currCalibration_B 1.468 // 4.5
 #define vCalibration 280.88     //  151.8
+
+
+#define SOLAR 1
+#define RED 2
+#define ENERGY_TODAY1 3
+#define ENERGY_TODAY2 4
+#define CUPS_NUMBER 5
+#define WIFI_STATUS 6
+#define MQTT_STATUS 7

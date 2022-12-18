@@ -39,11 +39,17 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) // save the settings
     hostName = args.arg("hostname");
     hostName.trim();
 
+    CUPS = args.arg("CUPSNumber");
+    CUPS.trim();
+
+    powerSupplierNumber = args.arg("PowerSupplier");
+    powerSupplierNumber.trim();
+
     // The entered value is owned by AutoConnectAux of /mqtt_setting.
     // To retrieve the elements of /mqtt_setting, it is necessary to get
     // the AutoConnectAux object of /mqtt_setting.
     File param = FlashFS.open(PARAM_FILE, "w");
-    portal.aux("/mqtt_setting")->saveElement(param, {"hostname", "apPass", "settingsPass"});
+    portal.aux("/mqtt_setting")->saveElement(param, {"hostname", "apPass", "settingsPass", "CUPSNumber", "PowerSupplier"});
     param.close();
 
     // Echo back saved parameters to AutoConnectAux page.
@@ -51,6 +57,8 @@ String saveParams(AutoConnectAux &aux, PageArgument &args) // save the settings
     echo.value += "ESP host name: " + hostName + "<br>";
     echo.value += "AP Password: " + apPass + "<br>";
     echo.value += "Settings Page Password: " + settingsPass + "<br>";
+    echo.value += "Cups Number: " + CUPS + "<br>";
+    echo.value += "Power Supplier: " + powerSupplierNumber + "<br>";
 
     return String("");
 }
@@ -97,6 +105,7 @@ void setup() // main setup functions
 
     Serial.print("Device ID: ");
     Serial.println(ss.getMACAddress());
+    setupOLED();
 
 #if defined(ARDUINO_ARCH_ESP8266)
     FlashFS.begin();
@@ -114,6 +123,8 @@ void setup() // main setup functions
         loadParams(mqtt_setting, args);
         AutoConnectInput &hostnameElm = mqtt_setting["hostname"].as<AutoConnectInput>();
         AutoConnectInput &apPassElm = mqtt_setting["apPass"].as<AutoConnectInput>();
+        AutoConnectInput &cupsNumElm = mqtt_setting["CUPSNumber"].as<AutoConnectInput>();
+        AutoConnectInput &powerSupplierElm = mqtt_setting["PowerSupplier"].as<AutoConnectInput>();
 
         AutoConnectInput &settingsPassElm = mqtt_setting["settingsPass"].as<AutoConnectInput>();
 
@@ -122,6 +133,8 @@ void setup() // main setup functions
         hostName = String(hostnameElm.value);
         apPass = String(apPassElm.value);
         settingsPass = String(settingsPassElm.value);
+        CUPS = String(cupsNumElm.value);
+        powerSupplierNumber = String(powerSupplierElm.value);
 
         if (hostnameElm.value.length())
         {
@@ -212,6 +225,12 @@ void setup() // main setup functions
     setupTbProvision();
     mqttConnect(); // start mqtt
     setupNTP();
+    setDisplay(CUPS_NUMBER, CUPS);
+    if (mqttClient.connected())
+    {
+        setDisplay(WIFI_STATUS, "W");
+        setDisplay(MQTT_STATUS, "M");
+    }
 }
 
 int k = 0;

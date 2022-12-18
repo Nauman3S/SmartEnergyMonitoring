@@ -52,6 +52,7 @@ fs::SPIFFSFS &FlashFS = SPIFFS;
 #include "statusLED.h"
 #include "neoTimer.h"
 #include "ntp.h"
+#include "oledHandler.h"
 
 unsigned long lastPub = 0;
 unsigned int updateInterval = 3000;
@@ -109,6 +110,8 @@ String connectionMode = "WiFi";
 bool atDetect(IPAddress &softapIP)
 {
   Serial.println("Captive portal started, SoftAP IP:" + softapIP.toString());
+  setDisplay(WIFI_STATUS,"W");
+  setDisplay(MQTT_STATUS,"");
 
   return true;
 }
