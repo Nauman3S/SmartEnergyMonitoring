@@ -1,6 +1,8 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Fonts/FreeSerif12pt7b.h> //https://learn.adafruit.com/adafruit-gfx-graphics-library/using-fonts#step-2
+
 #define SCREEN_WIDTH 128    // OLED display width, in pixels
 #define SCREEN_HEIGHT 64    //
 #define OLED_RESET -1       // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -110,6 +112,8 @@ void setupOLED()
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
+    display.setFont(&FreeSerif12pt7b);
+
     // Display static text
     display.println("BDE Mono");
     display.display();
