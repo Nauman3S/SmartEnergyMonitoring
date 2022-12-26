@@ -7,7 +7,8 @@
 #include <FS.h>     //ESP32 File System
 #include "energyHandler.h"
 #include "thingsBoardHandler.h"
-Neotimer ntpTimer = Neotimer(1000); // 1 second timer
+Neotimer ntpTimer = Neotimer(1000);    // 1 second timer
+Neotimer energyTimer = Neotimer(3000); // 1 second timer
 
 IPAddress ipV(192, 168, 4, 1);
 String loadParams(AutoConnectAux &aux, PageArgument &args) // function to load saved settings
@@ -225,11 +226,11 @@ void setup() // main setup functions
     setupTbProvision();
     mqttConnect(); // start mqtt
     setupNTP();
-    setDisplay(CUPS_NUMBER, CUPS);
+    updateCUPS(CUPS);
     if (mqttClient.connected())
     {
-        setDisplay(WIFI_STATUS, "W");
-        setDisplay(MQTT_STATUS, "M");
+        updateWiFiStatus(true);
+        updateMQTTStatus(true);
     }
 }
 
@@ -240,6 +241,14 @@ void loop()
     server.handleClient();
     portal.handleRequest();
     loopEmon();
+
+    if (energyTimer.repeat(1))
+    { // update display
+        updateValue(SOLAR, realPower1);
+        updateValue(RED, realPower2);
+        updateValue(ENERGY_TODAY1, apparentPower1);
+        updateValue(ENERGY_TODAY2, apparentPower2);
+    }
     if (ntpTimer.repeat(1))
     {
         loopNTP();

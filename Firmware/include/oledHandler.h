@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <Fonts/FreeSerif12pt7b.h> //https://learn.adafruit.com/adafruit-gfx-graphics-library/using-fonts#step-2
+// #include <Fonts/FreeSerif12pt7b.h> //https://learn.adafruit.com/adafruit-gfx-graphics-library/using-fonts#step-2
 
 #define SCREEN_WIDTH 128    // OLED display width, in pixels
 #define SCREEN_HEIGHT 64    //
@@ -17,77 +17,9 @@ String cupsNumber = "0";
 String wifiS = "W";
 String mqttS = "M";
 
-void displayOLED(String msg)
-{
-    display.clearDisplay();
-    display.print(msg);
-    display.display();
-}
-
-void displayUI()
-{
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.setCursor(0, 1);
-    display.print("Solar(W)");
-    display.setCursor(90, 1);
-    display.print("Red(W)");
-    display.setCursor(55, 1);
-    display.print(wifiS);
-    display.setCursor(59, 1);
-    display.print(mqttS);
-    display.setCursor(0, 12);
-    display.print(solar);
-    display.setCursor(90, 12);
-    display.print(red);
-    display.setCursor(0, 25);
-    display.print("EnergyToday");
-    display.setCursor(90, 25);
-    display.print("EnergyToday");
-
-    display.setCursor(0, 42);
-    display.print(energyToday1);
-    display.setCursor(90, 42);
-    display.print(energyToday2);
-    display.setCursor(1, 55);
-    display.print(cupsNumber);
-    display.display();
-}
-
-void setDisplay(uint8_t param, String text)
-{
-    if (param == SOLAR)
-    {
-        solar = text;
-    }
-    else if (param == RED)
-    {
-        red = text;
-    }
-    else if (param == ENERGY_TODAY1)
-    {
-        energyToday1 = text;
-    }
-    else if (param == ENERGY_TODAY2)
-    {
-        energyToday2 = text;
-    }
-    else if (param == CUPS_NUMBER)
-    {
-        cupsNumber = text;
-    }
-    else if (param == WIFI_STATUS)
-    {
-        wifiS = text;
-    }
-    else if (param == MQTT_STATUS)
-    {
-        mqttS = text;
-    }
-    displayUI();
-}
 void setupOLED()
 {
+
     Wire.begin(21, 22);
     while (1)
     {
@@ -109,12 +41,118 @@ void setupOLED()
     }
 
     display.clearDisplay();
-    display.setTextSize(1);
     display.setTextColor(WHITE);
+    display.setTextSize(2);
     display.setCursor(0, 0);
-    display.setFont(&FreeSerif12pt7b);
+    display.print("Solar(W)");
+    display.setCursor(50, 0);
+    display.print("W");
+    display.setCursor(52, 0);
+    display.print("M");
+    display.setCursor(100, 0);
+    display.print("RED(W)");
+    display.setTextSize(1);
+    display.setCursor(0, 16);
+    display.print(0.0);
+    display.setCursor(100, 16);
+    display.print(0.0);
+    display.setTextSize(2);
+    display.setCursor(0, 32);
+    display.print("Energy Today");
+    display.setCursor(100, 32);
+    display.print("Energy Today");
+    display.setTextSize(1);
+    display.setCursor(0, 48);
+    display.print(0);
+    display.setCursor(100, 48);
+    display.print(0);
+    display.setTextSize(2);
+    display.setCursor(50, 64);
+    display.print("ES- XXXXX -0F");
+    display.display();
+}
 
-    // Display static text
-    display.println("BDE Mono");
+void updateValue(uint8_t param, String text)
+{
+    display.setTextSize(1);
+    if (param == SOLAR)
+    {
+
+        display.setCursor(0, 16);
+        display.setTextColor(BLACK);
+        display.print(text);
+        display.setTextColor(WHITE);
+        display.print(text);
+    }
+    else if (param == RED)
+    {
+        display.setCursor(100, 16);
+        display.setTextColor(BLACK);
+        display.print(text);
+        display.setTextColor(WHITE);
+        display.print(text);
+    }
+    else if (param == ENERGY_TODAY1)
+    {
+        display.setCursor(0, 48);
+        display.setTextColor(BLACK);
+        display.print(text);
+        display.setTextColor(WHITE);
+        display.print(text);
+    }
+    else if (param == ENERGY_TODAY2)
+    {
+        display.setCursor(100, 48);
+        display.setTextColor(BLACK);
+        display.print(text);
+        display.setTextColor(WHITE);
+        display.print(text);
+    }
+    display.display();
+}
+
+void updateWiFiStatus(bool connected)
+{
+    display.setTextSize(1);
+    display.setCursor(50, 0);
+    display.setTextColor(BLACK);
+    display.print("W");
+    if (connected)
+    {
+
+        display.setTextColor(WHITE);
+        display.print("W");
+    }
+    display.display();
+}
+void updateMQTTStatus(bool connected)
+{
+    display.setTextSize(1);
+    display.setCursor(52, 0);
+    display.setTextColor(BLACK);
+     display.print("M");
+    if (connected)
+    {
+
+        display.setTextColor(WHITE);
+        display.print("M");
+    }
+    display.display();
+}
+void updateCUPS(String cups)
+{
+
+    display.setTextSize(2);
+    display.setCursor(50, 64);
+    display.setTextColor(BLACK);
+    display.print(cups);
+    display.setTextColor(WHITE);
+    display.print(cups);
+    display.display();
+}
+void displayOLED(String msg)
+{
+    display.clearDisplay();
+    display.print(msg);
     display.display();
 }
